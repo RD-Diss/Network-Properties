@@ -1,0 +1,11 @@
+
+PL006 <- read.csv("M_PL_006.csv", header = T)
+PL006 
+
+names(PL006) <- paste("Pol", 1:62, sep = "")
+row.names(PL006) <- paste("Pla", 1:17, sep = "")  
+PL006  <- as.matrix(PL006)
+PL006
+
+PL006[PL006 >= 1] <- 1
+PL006
