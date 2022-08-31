@@ -51,75 +51,22 @@ plot(points,add=T)
 
 ### Pollinator Network Analysis
 
-PL004 <- read.csv("004_Bin.csv", header = F)
 
 
-PL004 
+##Load Network
 
-names(PL004) <- paste("Pol", 1:84, sep = "")
-row.names(PL004) <- paste("Pla", 1:12, sep = "")  
-PL004  <- as.matrix(PL004)
+net <- as.matrix(read.csv("M_PL_006.csv", header = T, row.names = 1))
 
-n_Pla4 <- dim(PL004)[1]
-n_Pla4
+## Binary Change 
+net[net != 0] <- 1
+net
 
-n_Pol4 <- dim(PL004)[2]
-n_Pol4
+S_r <- dim(net)[1]
+S_c <- dim(net)[2]
+S <- S_r + S_c
+L <- sum(net)
+C <- L/(S_r * S_c)
 
-S <- n_Pla4 + n_Pol4
 S
-
-L <- sum(PL004)
 L
-
-AV <- L/S
-AV
-
-CON <- L/(n_Pla4 * n_Pol4)
-CON
-
-### 006
-
-dir()
-
-PL006 <- read.csv("006_Bin.csv", header = F)
-
-
-PL006 
-
-names(PL006) <- paste("Pol", 1:61, sep = "")
-row.names(PL006) <- paste("Pla", 1:17, sep = "")  
-PL006  <- as.matrix(PL006)
-PL006
-n_Pla <- dim(PL006)[1]
-n_Pla
-
-n_Pol <- dim(PL006)[2]
-n_Pol
-
-S <- n_Pla + n_Pol
-S
-
-L <- sum(PL006)
-L
-
-AV <- L/S
-AV
-
-CON <- L/(n_Pla * n_Pol)
-CON
-
-##Binary Network Creation
-
-dir()
-
-PL006 <- read.csv("M_PL_006.csv", header = T)
-PL006 
-
-names(PL006) <- paste("Pol", 1:62, sep = "")
-row.names(PL006) <- paste("Pla", 1:17, sep = "")  
-PL006  <- as.matrix(PL006)
-PL006
-
-PL006[PL006 >= 1] <- 1
-PL006
+C
