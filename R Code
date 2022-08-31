@@ -7,5 +7,7 @@ row.names(PL006) <- paste("Pla", 1:17, sep = "")
 PL006  <- as.matrix(PL006)
 PL006
 
+## Binary Change Test
+
 PL006[PL006 >= 1] <- 1
 PL006
