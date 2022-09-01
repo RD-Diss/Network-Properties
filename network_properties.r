@@ -70,3 +70,14 @@ C <- L/(S_r * S_c)
 S
 L
 C
+
+## Loop Test
+
+Polnetworks <- list.files("C:/Users/danie/Desktop/Master's/Diss/Geographical Variability of Networks/Data/Web Of Life/Polinators")
+Polnetworks
+
+for (i in 1:length(Polnetworks)) {
+  assign(paste0("network", i),
+         as.matrix(read.csv(paste0("C:/Users/danie/Desktop/Master's/Diss/Geographical Variability of Networks/Data/Web Of Life/Polinators"), header = T, row.names = 1, Polnetworks [1])))
+  
+}
