@@ -84,7 +84,6 @@ S
 L
 C
 
-dir()
 
 ## Loop Test
 
