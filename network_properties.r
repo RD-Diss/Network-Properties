@@ -87,12 +87,28 @@ C
 
 ## Loop Test
 
-Polnetworks <- list.files("C:/Users/danie/Desktop/Master's/Diss/Geographical Variability of Networks/Data/Web Of Life/Polinators")
+Polnetworks <- list.files("./Polinators")
 Polnetworks
 
 for (i in 1:length(Polnetworks)) {
-  assign(paste0("network", i),
-         as.matrix(read.csv(paste0("C:/Users/danie/Desktop/Master's/Diss/Geographical Variability of Networks/Data/Web Of Life/Polinators"), header = T, row.names = 1, Polnetworks [1])))
+  
+  net <- as.matrix(read.csv(paste0("./Polinators/",Polnetworks[i]), header = T, row.names = 1))
+  
+  ## Binary Change 
+  net[net != 0] <- 1
+  net
+  
+  S_r <- dim(net)[1]
+  S_c <- dim(net)[2]
+  S <- S_r + S_c
+  L <- sum(net)
+  C <- L/(S_r * S_c)
+  
+  print(C)
+  
+  
+  # assign(paste0("network", i),
+  #        as.matrix(read.csv(paste0("C:/Users/danie/Desktop/Master's/Diss/Geographical Variability of Networks/Data/Web Of Life/Polinators"), header = T, row.names = 1, Polnetworks [1])))
   
 }
 
