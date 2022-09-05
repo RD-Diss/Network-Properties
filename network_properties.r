@@ -127,6 +127,6 @@ PolTotMod
 
 PolTotrob
 
-PolNetAn <- rbind(PolTotS,PolTotL,PolTotAV,PolTotC,PolTotMod,PolTotrob )
+PolNetAn <- data.frame(PolTotS,PolTotL,PolTotAV,PolTotC,PolTotMod,PolTotrob)
 PolNetAn
 
