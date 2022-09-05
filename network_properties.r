@@ -212,5 +212,17 @@ test
 #robustness
 
 robtest <- second.extinct(net,participant = "both", details = false)
+
+
+robtestHAB <- second.extinct(net,participant = "higher", method = "abun", details = false)
+robtestLAB<- second.extinct(net,participant = "lower", method = "abun", details = false)
+
+robtestHBTL <- second.extinct(net,participant = "higher", method = "degree", details = false)
+robtestLBTL<- second.extinct(net,participant = "lower", method = "degree", details = false)
+
 robustness(robtest)
+robustness(robtestHAB)
+robustness(robtestLAB)
+robustness(robtestHBTL)
+robustness(robtestLBTL)
 
