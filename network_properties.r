@@ -1,8 +1,11 @@
 ##Loading required packages 
+install.packages('bipartite')
+library('bipartite')
 library(raster)
 library(sp)
+library(igraph)
 
-###Polinator Data
+###Pollinator Data
 
 ##Extracting wordlclim data
 
@@ -46,9 +49,9 @@ names(r) <- c("ATemp","TSeas","APrec","PSeas")
 HParmeta <- read.csv("Parreferences.csv", header = T)
 
 HParlat <- c(HParmeta[,9])
-  
+
 HParlon <- c(HParmeta[,10])
-  
+
 
 coordinates <- data.frame(x=HParlon,y=HParlat)
 
@@ -65,50 +68,61 @@ plot(points,add=T)
 
 ### Pollinator Network Analysis
 
+##Network Loop 
 
-##Load Network
+PolTotS <- c() #Pollinator all species number
+PolTotL <- c() #Pollinator all links
+PolTotC <- c() #Pollinator all connectance
+PolTotAV <- c() #Pollinator all average number of links per species
+PolTotMod <- c() #Pollinator all modularity
+PolTotrob <- c() #Pollinator all robustness
 
-net <- as.matrix(read.csv("M_PL_004.csv", header = T, row.names = 1))
-
-## Binary Change 
-net[net != 0] <- 1
-net
-
-S_r <- dim(net)[1]
-S_c <- dim(net)[2]
-S <- S_r + S_c
-L <- sum(net)
-C <- L/(S_r * S_c)
-
-S
-L
-C
-
-
-## Loop Test
-
-Polnetworks <- list.files("./Polinators")
+Polnetworks <- list.files("C:\\Users\\danie\\Desktop\\Polinators")
 Polnetworks
 
 for (i in 1:length(Polnetworks)) {
   
-  net <- as.matrix(read.csv(paste0("./Polinators/",Polnetworks[i]), header = T, row.names = 1))
+  net <- as.matrix(read.csv(paste0("C:\\Users\\danie\\Desktop\\Polinators\\",Polnetworks[i]), header = T, row.names = 1))
+  
   
   ## Binary Change 
   net[net != 0] <- 1
   net
   
+  #Network Properties
   S_r <- dim(net)[1]
   S_c <- dim(net)[2]
   S <- S_r + S_c
   L <- sum(net)
+  AV <- L/S
   C <- L/(S_r * S_c)
   
-  print(C)
   
+  PolTotS <- append(PolTotS,S)
   
-  # assign(paste0("network", i),
-  #        as.matrix(read.csv(paste0("C:/Users/danie/Desktop/Master's/Diss/Geographical Variability of Networks/Data/Web Of Life/Polinators"), header = T, row.names = 1, Polnetworks [1])))
-  
-}
+  PolTotL <- append(PolTotL,L)
 
+  PolTotC <- append(PolTotC,C)
+  
+  PolTotAV <- append(PolTotAV,AV)
+  
+  PolMod <- computeModules(net,forceLPA = T)@likelihood #Calculating Modularity
+  
+  PolTotMod <- append(PolTotMod,PolMod)
+  
+  Polex <- second.extinct(net,participant = "both", details = false) 
+  
+  Polrob <- robustness(Polex) #Calculating robustness
+  PolTotrob <- append(PolTotrob, Polrob)
+  
+  
+  }
+
+PolTotS
+PolTotL
+PolTotAV
+PolTotC
+
+PolTotMod
+
+PolTotrob
