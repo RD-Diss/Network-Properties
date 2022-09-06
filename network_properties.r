@@ -226,3 +226,10 @@ robustness(robtestLAB)
 robustness(robtestHBTL)
 robustness(robtestLBTL)
 
+
+## Exporting Data
+
+write.csv(PolNetAll, "All_Pollinator_Data.csv")
+
+
+write.csv(ParNetAll, "All_Parasite_Data.csv")
