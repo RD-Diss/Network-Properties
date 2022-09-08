@@ -75,7 +75,11 @@ PolTotL <- c() #Pollinator all links
 PolTotC <- c() #Pollinator all connectance
 PolTotAV <- c() #Pollinator all average number of links per species
 PolTotMod <- c() #Pollinator all modularity
-PolTotrob <- c() #Pollinator all robustness
+PolTotRrob <- c() #Pollinator all Random robustness
+PolTotrobHAB <- c() #Pollinator all Higher Trophic Abundance robustness
+PolTotrobLAB <- c() #Pollinator all Lower Trophic Abundance robustness
+PolTotrobHBTL <- c() #Pollinator all Higher Trophic Generalist First robustness
+PolTotrobLBTL <- c() #Pollinator all Lower Trophic Generalist First robustness
 
 Polnetworks <- list.files("C:\\Users\\danie\\Desktop\\Polinators")
 Polnetworks
@@ -110,10 +114,30 @@ for (i in 1:length(Polnetworks)) {
   
   PolTotMod <- append(PolTotMod,PolMod)
   
-  Polex <- second.extinct(net,participant = "both", details = false) 
+  Polex <- second.extinct(net,participant = "both", details = false) #Calculating Random robustness
   
-  Polrob <- robustness(Polex) #Calculating robustness
-  PolTotrob <- append(PolTotrob, Polrob)
+  PolRrob <- robustness(Polex) 
+  PolTotRrob <- append(PolTotRrob, PolRrob)
+  
+  PolHABex <- second.extinct(net,participant = "higher", method = "abun", details = false) #Calculating least abundant first robustness
+  PolLABex<- second.extinct(net,participant = "lower", method = "abun", details = false)
+  
+  
+  PolrobHAB <- robustness(PolHABex)
+  PolTotrobHAB <- append(PolTotrobHAB,PolrobHAB)
+  
+  PolrobLAB <- robustness(PolLABex)
+  PolTotrobLAB <- append(PolTotrobLAB, PolrobLAB)
+  
+  PolHBTLex <- second.extinct(net,participant = "higher", method = "degree", details = false) #Calculating most abundant to least robustness
+  PolLBTLex <- second.extinct(net,participant = "lower", method = "degree", details = false)
+  
+  
+  PolrobHBTL <- robustness(PolHBTLex)
+  PolTotrobHBTL <- append(PolTotrobHBTL, PolrobHBTL)
+  
+  PolrobLBTL <- robustness(PolLBTLex)
+  PolTotrobLBTL <- append(PolTotrobLBTL, PolrobLBTL)
   
   
 }
@@ -125,10 +149,14 @@ PolTotC
 
 PolTotMod
 
-PolTotrob
+PolTotRrob
+PolTotrobHAB  
+PolTotrobLAB  
+PolTotrobHBTL 
+PolTotrobLBTL
 
 
-PolNetAn <- data.frame(PolTotS,PolTotL,PolTotAV,PolTotC,PolTotMod,PolTotrob)
+PolNetAn <- data.frame(PolTotS,PolTotL,PolTotAV,PolTotC,PolTotMod,PolTotRrob,PolTotrobHAB,PolTotrobLAB,PolTotrobHBTL,PolTotrobLBTL)
 PolNetAn
 
 PolNetAll <-data.frame(PolNetAn,PolDat)
@@ -143,7 +171,11 @@ ParTotL <- c() #Parasite all links
 ParTotC <- c() #Parasite all connectance
 ParTotAV <- c() #Parasite all average number of links per species
 ParTotMod <- c() #Parasite all modularity
-ParTotrob <- c() #Parasite all robustness
+ParTotRrob <- c() #Parasite all Random robustness
+ParTotrobHAB <- c() #Parasite all Higher Trophic Abundance robustness
+ParTotrobLAB <- c() #Parasite all Lower Trophic Abundance robustness
+ParTotrobHBTL <- c() #Parasite all Higher Trophic Generalist First robustness
+ParTotrobLBTL <- c() #Parasite all Lower Trophic Generalist First robustness
 
 Parnetworks <- list.files("C:\\Users\\danie\\Desktop\\Parasites")
 Parnetworks
@@ -180,8 +212,30 @@ for (i in 1:length(Parnetworks)) {
   
   Parex <- second.extinct(net,participant = "both", details = false) 
   
-  Parrob <- robustness(Parex) #Calculating robustness
-  ParTotrob <- append(ParTotrob, Parrob)
+  Parex <- second.extinct(net,participant = "both", details = false) #Calculating Random robustness
+  
+  ParRrob <- robustness(Parex) 
+  ParTotRrob <- append(ParTotRrob, ParRrob)
+  
+  ParHABex <- second.extinct(net,participant = "higher", method = "abun", details = false) #Calculating least abundant first robustness
+  ParLABex<- second.extinct(net,participant = "lower", method = "abun", details = false)
+  
+  
+  ParrobHAB <- robustness(ParHABex)
+  ParTotrobHAB <- append(ParTotrobHAB,ParrobHAB)
+  
+  ParrobLAB <- robustness(ParLABex)
+  ParTotrobLAB <- append(ParTotrobLAB, ParrobLAB)
+  
+  ParHBTLex <- second.extinct(net,participant = "higher", method = "degree", details = false) #Calculating most abundant to least robustness
+  ParLBTLex <- second.extinct(net,participant = "lower", method = "degree", details = false)
+  
+  
+  ParrobHBTL <- robustness(ParHBTLex)
+  ParTotrobHBTL <- append(ParTotrobHBTL, ParrobHBTL)
+  
+  ParrobLBTL <- robustness(ParLBTLex)
+  ParTotrobLBTL <- append(ParTotrobLBTL, ParrobLBTL)
   
   
 }
@@ -193,10 +247,14 @@ ParTotC
 
 ParTotMod
 
-ParTotrob
+ParTotRrob
+ParTotrobHAB  
+ParTotrobLAB  
+ParTotrobHBTL 
+ParTotrobLBTL
 
 
-ParNetAn <- data.frame(ParTotS,ParTotL,ParTotAV,ParTotC,ParTotMod,ParTotrob)
+ParNetAn <- data.frame(ParTotS,ParTotL,ParTotAV,ParTotC,ParTotMod,ParTotRrob,ParTotrobHAB, ParTotrobLAB,ParTotrobHBTL,ParTotrobLBTL)
 ParNetAn
 
 ParNetAll <-data.frame(ParNetAn,HParDat)
@@ -225,7 +283,6 @@ robustness(robtestHAB)
 robustness(robtestLAB)
 robustness(robtestHBTL)
 robustness(robtestLBTL)
-
 
 ## Exporting Data
 
