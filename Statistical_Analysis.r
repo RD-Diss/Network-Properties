@@ -4,7 +4,7 @@ StatTestPol <- read.csv("All_Pollinator_Data.csv" , header = T,)
 
 StatTestPol
 
-LogCon <- log10(StatTestPol$PolTotC)
+LogCon <- log10(StatTestPol$PolTotC) ##Log10 to ensure normality
 LogCon
 
 Annual_Precipitation<- StatTestPol$APrec
