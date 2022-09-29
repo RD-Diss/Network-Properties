@@ -165,7 +165,6 @@ for (i in 1:length(Polnetworks)) {
 
 ########## Diet Overlap
 
-PolTotOverlapC <- c() # Pollinator all diet overlap connectance
 PolTotOverlap <- c() # Pollinator all pollinator (consumer) diet overlap 
 
 for (i in 1:length(Polnetworks)) {
@@ -204,10 +203,7 @@ for (i in 1:length(Polnetworks)) {
   OS_r ## Total species number
   OL <- sum(out) ## Number of links
   
-  OC <- OL/OS_r*OS_r ## Connectance
-  PolTotOverlapC <- append(PolTotOverlapC,OC)
-  
-  PolOverlap <- OL/(OS_r*(OS_r-1)/2) ## Pollinator (consumer) divided by the possible links between them
+  PolOverlap <- OL/(OS_r*(OS_r-1)/2) ## Pollinator (consumer)  divided by the possible links between them
   PolTotOverlap <- append(PolTotOverlap,PolOverlap)
   
 }
@@ -332,7 +328,6 @@ for (i in 1:length(Parnetworks)) {
 
 ########## Diet Overlap
 
-ParTotOverlapC <- c() # Parasite all diet overlap connectance
 ParTotOverlap <- c() # All Parasite (consumer) diet overlap 
 
 for (i in 1:length(Parnetworks)) {
@@ -371,10 +366,7 @@ for (i in 1:length(Parnetworks)) {
   OS_r ## Total species number
   OL <- sum(out) ## Number of links
   
-  OC <- OL/OS_r*OS_r ## Connectance
-  ParTotOverlapC <- append(ParTotOverlapC,OC)
-  
-  ParOverlap <- OL/(OS_r*(OS_r-1)/2) ## Parasite (consumer)  divided by the possible links between them
+  ParOverlap <- OL/(OS_r*(OS_r-1)/2) ## Parasite (consumer) divided by the possible links between them
   ParTotOverlap <- append(ParTotOverlap,ParOverlap)
   
 }
@@ -414,32 +406,4 @@ write.csv(PolNetAll, "All_Pollinator_Data.csv")
 
 
 write.csv(ParNetAll, "All_Parasite_Data.csv")
-
-
-## Tests
-
-#modularity
-
-test <- computeModules(net,forceLPA = T)@likelihood
-
-plotModuleWeb(test)
-test
-
-#robustness
-
-robtest <- second.extinct(net,participant = "both", details = false)
-
-
-robtestHAB <- second.extinct(net,participant = "higher", method = "abun", details = false)
-robtestLAB<- second.extinct(net,participant = "lower", method = "abun", details = false)
-
-robtestHBTL <- second.extinct(net,participant = "higher", method = "degree", details = false)
-robtestLBTL<- second.extinct(net,participant = "lower", method = "degree", details = false)
-
-robustness(robtest)
-robustness(robtestHAB)
-robustness(robtestLAB)
-robustness(robtestHBTL)
-robustness(robtestLBTL)
-
 
