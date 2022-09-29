@@ -1,9 +1,12 @@
 ##Loading required packages 
 install.packages('bipartite')
+install.packages("visreg")
+library(visreg)
 library('bipartite')
 library(raster)
 library(sp)
 library(igraph)
+library(car)
 
 ###Pollinator Data
 
@@ -80,6 +83,10 @@ PolTotrobHAB <- c() #Pollinator all Higher Trophic Abundance robustness
 PolTotrobLAB <- c() #Pollinator all Lower Trophic Abundance robustness
 PolTotrobHBTL <- c() #Pollinator all Higher Trophic Generalist First robustness
 PolTotrobLBTL <- c() #Pollinator all Lower Trophic Generalist First robustness
+PolTotDietOver <- c() #Pollinator all Diet overlap
+PolTotGen <- c() #Pollinator all Generality-measure of the degree of specialization in the web from the consumer perspective.
+PolTotVul <- c() #Pollinator all Vulnerability- represents the degree of specialization found in the network from the resource perspective.
+PolTotNest <- c() #Pollinator nestedness
 
 Polnetworks <- list.files("C:\\Users\\danie\\Desktop\\Polinators")
 Polnetworks
@@ -94,12 +101,14 @@ for (i in 1:length(Polnetworks)) {
   net
   
   #Network Properties
-  S_r <- dim(net)[1]
-  S_c <- dim(net)[2]
-  S <- S_r + S_c
-  L <- sum(net)
-  AV <- L/S
-  C <- L/(S_r * S_c)
+  S_r <- dim(net)[1] ## Rows = Plant Species
+  S_c <- dim(net)[2] ## Columns = Pollinator Species
+  S <- S_r + S_c ## Total species number
+  L <- sum(net) ## Number of links
+  AV <- L/S ## Links per species
+  C <- L/(S_r * S_c) ## Connectance
+  #PolDietOv <- L/()
+  #PolGen <- L/S_c
   
   
   PolTotS <- append(PolTotS,S)
@@ -139,8 +148,73 @@ for (i in 1:length(Polnetworks)) {
   PolrobLBTL <- robustness(PolLBTLex)
   PolTotrobLBTL <- append(PolTotrobLBTL, PolrobLBTL)
   
+  #TPolDietOver <- append(TPolDietOver, PolDietOv)
+  
+  PolGen <- L/S_c
+  PolTotGen <- append(PolTotGen, PolGen)
+  
+  PolVul <- L/S_r
+  PolTotVul <- append(PolTotVul, PolVul)
+  
+  PolNest <- nested(net, method="NODF", rescale=FALSE, normalised=TRUE)
+  PolTotNest <- append(PolTotNest,PolNest)
+  
   
 }
+
+
+########## Diet Overlap
+
+PolTotOverlapC <- c() # Pollinator all diet overlap connectance
+PolTotOverlap <- c() # Pollinator all pollinator (consumer) diet overlap 
+
+for (i in 1:length(Polnetworks)) {
+  
+  net <- as.matrix(read.csv(paste0("C:\\Users\\danie\\Desktop\\Polinators\\",Polnetworks[i]), header = T, row.names = 1))
+  
+  
+  ## Binary Change 
+  net[net != 0] <- 1
+  net
+  
+  ## Construct consumer diet overlap graph
+  
+  net <- t(net) ##Transpose
+  nrows <- NROW(net) #Count number of rows and columns
+  ncols <- NCOL(net)
+  out <- matrix(nrow = nrows, ncol = nrows) #Create an empty matrix with the number of rows
+  
+  for (i in 1:nrows){ #For every pollinator
+    for (j in 1:nrows){ #For every other pollinator
+      logical = any((net [i ,] & net[j,]) & net[j,]) ## the "any" checks if both vectors (rows) have 1s in the same location
+      
+      if (logical){ #If logical is true, produce 1 if not produce a 0
+        out[i, j] <- 1
+        out[j, i] <- 1
+      } else {
+        out[i, j] <- 0
+        out[j, i] <- 0
+      }
+    }
+  }
+ 
+   
+  #Diet overlap connectance
+  OS_r <- dim(out)[1] ## Rows = Pollinator Species
+  OS_r ## Total species number
+  OL <- sum(out) ## Number of links
+  
+  OC <- OL/OS_r ## Connectance
+  PolTotOverlapC <- append(PolTotOverlapC,OC)
+  
+  PolOverlap <- OC/(OS_c*(OS_c-1)/2) ## Pollinator (consumer) diet overlap connectance divided by the possible links between them
+  PolTotOverlap <- append(PolTotOverlap,PolOverlap)
+  
+}
+
+out
+
+PolTotOverlap
 
 PolTotS
 PolTotL
@@ -155,8 +229,12 @@ PolTotrobLAB
 PolTotrobHBTL 
 PolTotrobLBTL
 
+PolTotDietOver
+PolTotGen
+PolTotVul
+PolTotNest
 
-PolNetAn <- data.frame(PolTotS,PolTotL,PolTotAV,PolTotC,PolTotMod,PolTotRrob,PolTotrobHAB,PolTotrobLAB,PolTotrobHBTL,PolTotrobLBTL)
+PolNetAn <- data.frame(PolTotS,PolTotL,PolTotAV,PolTotC,PolTotMod,PolTotRrob,PolTotrobHAB,PolTotrobLAB,PolTotrobHBTL,PolTotrobLBTL, PolTotGen, PolTotVul, PolTotNest, PolTotOverlap)
 PolNetAn
 
 PolNetAll <-data.frame(PolNetAn,PolDat)
@@ -176,6 +254,10 @@ ParTotrobHAB <- c() #Parasite all Higher Trophic Abundance robustness
 ParTotrobLAB <- c() #Parasite all Lower Trophic Abundance robustness
 ParTotrobHBTL <- c() #Parasite all Higher Trophic Generalist First robustness
 ParTotrobLBTL <- c() #Parasite all Lower Trophic Generalist First robustness
+ParTotDietOver <- c() #Parasite all Diet overlap
+ParTotGen <- c() #Parasite all Generality-measure of the degree of specialization in the web from the consumer perspective.
+ParTotVul <- c() #Parasite all Vulnerability- represents the degree of specialization found in the network from the resource perspective.
+ParTotNest <- c() #Parasite nestedness
 
 Parnetworks <- list.files("C:\\Users\\danie\\Desktop\\Parasites")
 Parnetworks
@@ -237,8 +319,68 @@ for (i in 1:length(Parnetworks)) {
   ParrobLBTL <- robustness(ParLBTLex)
   ParTotrobLBTL <- append(ParTotrobLBTL, ParrobLBTL)
   
+  ParGen <- L/S_c
+  ParTotGen <- append(ParTotGen, ParGen)
+  
+  ParVul <- L/S_r
+  ParTotVul <- append(ParTotVul, ParVul)
+  
+  ParNest <- nested(net, method="NODF", rescale=FALSE, normalised=TRUE)
+  ParTotNest <- append(ParTotNest,ParNest)
+}
+
+
+########## Diet Overlap
+
+ParTotOverlapC <- c() # Parasite all diet overlap connectance
+ParTotOverlap <- c() # All Parasite (consumer) diet overlap 
+
+for (i in 1:length(Parnetworks)) {
+  
+  net <- as.matrix(read.csv(paste0("C:\\Users\\danie\\Desktop\\Parasites\\",Parnetworks[i]), header = T, row.names = 1))
+  
+  
+  ## Binary Change 
+  net[net != 0] <- 1
+  net
+  
+  ## Construct consumer diet overlap graph
+  
+  net <- t(net) ##Transpose
+  nrows <- NROW(net) #Count number of rows and columns
+  ncols <- NCOL(net)
+  out <- matrix(nrow = nrows, ncol = nrows) #Create an empty matrix with the number of rows
+  
+  for (i in 1:nrows){ #For every parasite
+    for (j in 1:nrows){ #For every other parasite
+      logical = any((net [i ,] & net[j,]) & net[j,]) ## the "any" checks if both vectors (rows) have 1s in the same location
+      
+      if (logical){ #If logical is true, produce 1 if not produce a 0
+        out[i, j] <- 1
+        out[j, i] <- 1
+      } else {
+        out[i, j] <- 0
+        out[j, i] <- 0
+      }
+    }
+  }
+  
+  
+  #Diet overlap connectance
+  OS_r <- dim(out)[1] ## Rows = Parasite Species
+  OS_r ## Total species number
+  OL <- sum(out) ## Number of links
+  
+  OC <- OL/OS_r ## Connectance
+  ParTotOverlapC <- append(ParTotOverlapC,OC)
+  
+  ParOverlap <- OC/(OS_c*(OS_c-1)/2) ## Parasite (consumer) diet overlap connectance divided by the possible links between them
+  ParTotOverlap <- append(ParTotOverlap,ParOverlap)
   
 }
+
+out
+
 
 ParTotS
 ParTotL
@@ -253,36 +395,18 @@ ParTotrobLAB
 ParTotrobHBTL 
 ParTotrobLBTL
 
+ParTotGen 
+ParTotVul
+ParTotNest
+ParTotOverlap
 
-ParNetAn <- data.frame(ParTotS,ParTotL,ParTotAV,ParTotC,ParTotMod,ParTotRrob,ParTotrobHAB, ParTotrobLAB,ParTotrobHBTL,ParTotrobLBTL)
+ParNetAn <- data.frame(ParTotS,ParTotL,ParTotAV,ParTotC,ParTotMod,ParTotRrob,ParTotrobHAB, ParTotrobLAB,ParTotrobHBTL,ParTotrobLBTL,ParTotGen, ParTotVul, ParTotNest, ParTotOverlap)
 ParNetAn
 
 ParNetAll <-data.frame(ParNetAn,HParDat)
 ParNetAll
 
-#modularity
 
-test <- computeModules(net,forceLPA = T)@likelihood
-
-plotModuleWeb(test)
-test
-
-#robustness
-
-robtest <- second.extinct(net,participant = "both", details = false)
-
-
-robtestHAB <- second.extinct(net,participant = "higher", method = "abun", details = false)
-robtestLAB<- second.extinct(net,participant = "lower", method = "abun", details = false)
-
-robtestHBTL <- second.extinct(net,participant = "higher", method = "degree", details = false)
-robtestLBTL<- second.extinct(net,participant = "lower", method = "degree", details = false)
-
-robustness(robtest)
-robustness(robtestHAB)
-robustness(robtestLAB)
-robustness(robtestHBTL)
-robustness(robtestLBTL)
 
 ## Exporting Data
 
