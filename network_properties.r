@@ -186,7 +186,7 @@ for (i in 1:length(Polnetworks)) {
   
   for (i in 1:nrows){ #For every pollinator
     for (j in 1:nrows){ #For every other pollinator
-      logical = any((net [i ,] & net[j,]) & net[j,]) ## the "any" checks if both vectors (rows) have 1s in the same location
+      logical = any((net [i ,] & net[j,]) & net[j,]) ## the "any" checks if both vectors (rows) have 1s in the same location and then it outputs True as the final result
       
       if (logical){ #If logical is true, produce 1 if not produce a 0
         out[i, j] <- 1
@@ -207,7 +207,7 @@ for (i in 1:length(Polnetworks)) {
   OC <- OL/OS_r ## Connectance
   PolTotOverlapC <- append(PolTotOverlapC,OC)
   
-  PolOverlap <- OC/(OS_c*(OS_c-1)/2) ## Pollinator (consumer) diet overlap connectance divided by the possible links between them
+  PolOverlap <- OC/(OS_r*(OS_r-1)/2) ## Pollinator (consumer) diet overlap connectance divided by the possible links between them
   PolTotOverlap <- append(PolTotOverlap,PolOverlap)
   
 }
@@ -353,7 +353,7 @@ for (i in 1:length(Parnetworks)) {
   
   for (i in 1:nrows){ #For every parasite
     for (j in 1:nrows){ #For every other parasite
-      logical = any((net [i ,] & net[j,]) & net[j,]) ## the "any" checks if both vectors (rows) have 1s in the same location
+      logical = any((net [i ,] & net[j,]) & net[j,]) ## the "any" checks if both vectors (rows) have 1s in the same location and then it outputs True as the final result
       
       if (logical){ #If logical is true, produce 1 if not produce a 0
         out[i, j] <- 1
@@ -374,7 +374,7 @@ for (i in 1:length(Parnetworks)) {
   OC <- OL/OS_r ## Connectance
   ParTotOverlapC <- append(ParTotOverlapC,OC)
   
-  ParOverlap <- OC/(OS_c*(OS_c-1)/2) ## Parasite (consumer) diet overlap connectance divided by the possible links between them
+  ParOverlap <- OC/(OS_r*(OS_r-1)/2) ## Parasite (consumer) diet overlap connectance divided by the possible links between them
   ParTotOverlap <- append(ParTotOverlap,ParOverlap)
   
 }
@@ -414,3 +414,32 @@ write.csv(PolNetAll, "All_Pollinator_Data.csv")
 
 
 write.csv(ParNetAll, "All_Parasite_Data.csv")
+
+
+## Tests
+
+#modularity
+
+test <- computeModules(net,forceLPA = T)@likelihood
+
+plotModuleWeb(test)
+test
+
+#robustness
+
+robtest <- second.extinct(net,participant = "both", details = false)
+
+
+robtestHAB <- second.extinct(net,participant = "higher", method = "abun", details = false)
+robtestLAB<- second.extinct(net,participant = "lower", method = "abun", details = false)
+
+robtestHBTL <- second.extinct(net,participant = "higher", method = "degree", details = false)
+robtestLBTL<- second.extinct(net,participant = "lower", method = "degree", details = false)
+
+robustness(robtest)
+robustness(robtestHAB)
+robustness(robtestLAB)
+robustness(robtestHBTL)
+robustness(robtestLBTL)
+
+
