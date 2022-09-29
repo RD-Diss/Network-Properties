@@ -204,7 +204,7 @@ for (i in 1:length(Polnetworks)) {
   OS_r ## Total species number
   OL <- sum(out) ## Number of links
   
-  OC <- OL/OS_r ## Connectance
+  OC <- OL/OS_r*OS_r ## Connectance
   PolTotOverlapC <- append(PolTotOverlapC,OC)
   
   PolOverlap <- OL/(OS_r*(OS_r-1)/2) ## Pollinator (consumer) divided by the possible links between them
@@ -371,7 +371,7 @@ for (i in 1:length(Parnetworks)) {
   OS_r ## Total species number
   OL <- sum(out) ## Number of links
   
-  OC <- OL/OS_r ## Connectance
+  OC <- OL/OS_r*OS_r ## Connectance
   ParTotOverlapC <- append(ParTotOverlapC,OC)
   
   ParOverlap <- OL/(OS_r*(OS_r-1)/2) ## Parasite (consumer)  divided by the possible links between them
