@@ -207,7 +207,7 @@ for (i in 1:length(Polnetworks)) {
   OC <- OL/OS_r ## Connectance
   PolTotOverlapC <- append(PolTotOverlapC,OC)
   
-  PolOverlap <- OC/(OS_r*(OS_r-1)/2) ## Pollinator (consumer) diet overlap connectance divided by the possible links between them
+  PolOverlap <- OL/(OS_r*(OS_r-1)/2) ## Pollinator (consumer) divided by the possible links between them
   PolTotOverlap <- append(PolTotOverlap,PolOverlap)
   
 }
@@ -374,7 +374,7 @@ for (i in 1:length(Parnetworks)) {
   OC <- OL/OS_r ## Connectance
   ParTotOverlapC <- append(ParTotOverlapC,OC)
   
-  ParOverlap <- OC/(OS_r*(OS_r-1)/2) ## Parasite (consumer) diet overlap connectance divided by the possible links between them
+  ParOverlap <- OL/(OS_r*(OS_r-1)/2) ## Parasite (consumer)  divided by the possible links between them
   ParTotOverlap <- append(ParTotOverlap,ParOverlap)
   
 }
