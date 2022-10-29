@@ -88,14 +88,14 @@ PolTotGen <- c() #Pollinator all Generality-measure of the degree of specializat
 PolTotVul <- c() #Pollinator all Vulnerability- represents the degree of specialization found in the network from the resource perspective.
 PolTotNest <- c() #Pollinator nestedness
 
-Polnetworks <- list.files("C:\\Users\\danie\\Desktop\\Polinators")
+Polnetworks <- list.files("...\\Polinators")
 Polnetworks
 
 ##Create the loop for the networks
 
 for (i in 1:length(Polnetworks)) {
   
-  net <- as.matrix(read.csv(paste0("C:\\Users\\danie\\Desktop\\Polinators\\",Polnetworks[i]), header = T, row.names = 1))
+  net <- as.matrix(read.csv(paste0("...Polinators\\",Polnetworks[i]), header = T, row.names = 1))
   
   
   ## Change network interactions to binary  
@@ -258,14 +258,14 @@ ParTotGen <- c() #Parasite all Generality-measure of the degree of specializatio
 ParTotVul <- c() #Parasite all Vulnerability- represents the degree of specialization found in the network from the resource perspective.
 ParTotNest <- c() #Parasite nestedness
 
-Parnetworks <- list.files("C:\\Users\\danie\\Desktop\\Parasites")
+Parnetworks <- list.files("...\\Parasites")
 Parnetworks
 
 ##Create the loop for the networks
 
 for (i in 1:length(Parnetworks)) {
   
-  net <- as.matrix(read.csv(paste0("C:\\Users\\danie\\Desktop\\Parasites\\",Parnetworks[i]), header = T, row.names = 1))
+  net <- as.matrix(read.csv(paste0("...\\Parasites\\",Parnetworks[i]), header = T, row.names = 1))
   
   
   #Change network interactions to binary 
