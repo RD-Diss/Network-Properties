@@ -91,26 +91,25 @@ PolTotNest <- c() #Pollinator nestedness
 Polnetworks <- list.files("C:\\Users\\danie\\Desktop\\Polinators")
 Polnetworks
 
+##Create the loop for the networks
+
 for (i in 1:length(Polnetworks)) {
   
   net <- as.matrix(read.csv(paste0("C:\\Users\\danie\\Desktop\\Polinators\\",Polnetworks[i]), header = T, row.names = 1))
   
   
-  ## Binary Change 
+  ## Change network interactions to binary  
   net[net != 0] <- 1
   net
   
-  #Network Properties
+  #Network Properties Calculations
   S_r <- dim(net)[1] ## Rows = Plant Species
   S_c <- dim(net)[2] ## Columns = Pollinator Species
   S <- S_r + S_c ## Total species number
   L <- sum(net) ## Number of links
   AV <- L/S ## Links per species
   C <- L/(S_r * S_c) ## Connectance
-  #PolDietOv <- L/()
-  #PolGen <- L/S_c
-  
-  
+
   PolTotS <- append(PolTotS,S)
   
   PolTotL <- append(PolTotL,L)
@@ -128,7 +127,7 @@ for (i in 1:length(Polnetworks)) {
   PolRrob <- robustness(Polex) 
   PolTotRrob <- append(PolTotRrob, PolRrob)
   
-  PolHABex <- second.extinct(net,participant = "higher", method = "abun", details = false) #Calculating least abundant first robustness
+  PolHABex <- second.extinct(net,participant = "higher", method = "abun", details = false) #Calculating least linked first robustness
   PolLABex<- second.extinct(net,participant = "lower", method = "abun", details = false)
   
   
@@ -138,7 +137,7 @@ for (i in 1:length(Polnetworks)) {
   PolrobLAB <- robustness(PolLABex)
   PolTotrobLAB <- append(PolTotrobLAB, PolrobLAB)
   
-  PolHBTLex <- second.extinct(net,participant = "higher", method = "degree", details = false) #Calculating most abundant to least robustness
+  PolHBTLex <- second.extinct(net,participant = "higher", method = "degree", details = false) #Calculating most linked to least robustness
   PolLBTLex <- second.extinct(net,participant = "lower", method = "degree", details = false)
   
   
@@ -148,24 +147,24 @@ for (i in 1:length(Polnetworks)) {
   PolrobLBTL <- robustness(PolLBTLex)
   PolTotrobLBTL <- append(PolTotrobLBTL, PolrobLBTL)
   
-  #TPolDietOver <- append(TPolDietOver, PolDietOv)
-  
-  PolGen <- L/S_c
+  PolGen <- L/S_c #Calculating generatlity 
   PolTotGen <- append(PolTotGen, PolGen)
   
-  PolVul <- L/S_r
+  PolVul <- L/S_r #Calculating vulerability
   PolTotVul <- append(PolTotVul, PolVul)
   
-  PolNest <- nested(net, method="NODF", rescale=FALSE, normalised=TRUE)
+  PolNest <- nested(net, method="NODF", rescale=FALSE, normalised=TRUE) #Calculating nestedness
   PolTotNest <- append(PolTotNest,PolNest)
   
   
 }
 
 
-########## Diet Overlap
+########## Diet Overlap Calculation
 
 PolTotOverlap <- c() # Pollinator all pollinator (consumer) diet overlap 
+
+#loop for transforming the networks to univariate networks as required to calculate overlap 
 
 for (i in 1:length(Polnetworks)) {
   
@@ -210,6 +209,8 @@ for (i in 1:length(Polnetworks)) {
 
 out
 
+#Checking totals are present
+
 PolTotOverlap
 
 PolTotS
@@ -229,6 +230,8 @@ PolTotDietOver
 PolTotGen
 PolTotVul
 PolTotNest
+
+#Collating totals for each parameter into a dataframe for exporting
 
 PolNetAn <- data.frame(PolTotS,PolTotL,PolTotAV,PolTotC,PolTotMod,PolTotRrob,PolTotrobHAB,PolTotrobLAB,PolTotrobHBTL,PolTotrobLBTL, PolTotGen, PolTotVul, PolTotNest, PolTotOverlap)
 PolNetAn
@@ -258,16 +261,18 @@ ParTotNest <- c() #Parasite nestedness
 Parnetworks <- list.files("C:\\Users\\danie\\Desktop\\Parasites")
 Parnetworks
 
+##Create the loop for the networks
+
 for (i in 1:length(Parnetworks)) {
   
   net <- as.matrix(read.csv(paste0("C:\\Users\\danie\\Desktop\\Parasites\\",Parnetworks[i]), header = T, row.names = 1))
   
   
-  ## Binary Change 
+  #Change network interactions to binary 
   net[net != 0] <- 1
   net
   
-  #Network Properties
+  #Network properties Calculations
   S_r <- dim(net)[1]
   S_c <- dim(net)[2]
   S <- S_r + S_c
@@ -295,7 +300,7 @@ for (i in 1:length(Parnetworks)) {
   ParRrob <- robustness(Parex) 
   ParTotRrob <- append(ParTotRrob, ParRrob)
   
-  ParHABex <- second.extinct(net,participant = "higher", method = "abun", details = false) #Calculating least abundant first robustness
+  ParHABex <- second.extinct(net,participant = "higher", method = "abun", details = false) #Calculating least linked first robustness
   ParLABex<- second.extinct(net,participant = "lower", method = "abun", details = false)
   
   
@@ -305,7 +310,7 @@ for (i in 1:length(Parnetworks)) {
   ParrobLAB <- robustness(ParLABex)
   ParTotrobLAB <- append(ParTotrobLAB, ParrobLAB)
   
-  ParHBTLex <- second.extinct(net,participant = "higher", method = "degree", details = false) #Calculating most abundant to least robustness
+  ParHBTLex <- second.extinct(net,participant = "higher", method = "degree", details = false) #Calculating most linked to least robustness
   ParLBTLex <- second.extinct(net,participant = "lower", method = "degree", details = false)
   
   
@@ -315,20 +320,22 @@ for (i in 1:length(Parnetworks)) {
   ParrobLBTL <- robustness(ParLBTLex)
   ParTotrobLBTL <- append(ParTotrobLBTL, ParrobLBTL)
   
-  ParGen <- L/S_c
+  ParGen <- L/S_c #Calculating generality
   ParTotGen <- append(ParTotGen, ParGen)
   
-  ParVul <- L/S_r
+  ParVul <- L/S_r #Calculating vulerability
   ParTotVul <- append(ParTotVul, ParVul)
   
-  ParNest <- nested(net, method="NODF", rescale=FALSE, normalised=TRUE)
+  ParNest <- nested(net, method="NODF", rescale=FALSE, normalised=TRUE) #Calculating Nestedness
   ParTotNest <- append(ParTotNest,ParNest)
 }
 
 
-########## Diet Overlap
+########## Diet Overlap Calculations
 
 ParTotOverlap <- c() # All Parasite (consumer) diet overlap 
+
+#loop for transforming the networks to univariate networks as required to calculate overlap 
 
 for (i in 1:length(Parnetworks)) {
   
@@ -373,6 +380,7 @@ for (i in 1:length(Parnetworks)) {
 
 out
 
+#Checking totals are present 
 
 ParTotS
 ParTotL
@@ -392,6 +400,8 @@ ParTotVul
 ParTotNest
 ParTotOverlap
 
+#Collating totals for each parameter into a dataframe for exporting
+
 ParNetAn <- data.frame(ParTotS,ParTotL,ParTotAV,ParTotC,ParTotMod,ParTotRrob,ParTotrobHAB, ParTotrobLAB,ParTotrobHBTL,ParTotrobLBTL,ParTotGen, ParTotVul, ParTotNest, ParTotOverlap)
 ParNetAn
 
@@ -406,4 +416,3 @@ write.csv(PolNetAll, "All_Pollinator_Data.csv")
 
 
 write.csv(ParNetAll, "All_Parasite_Data.csv")
-
