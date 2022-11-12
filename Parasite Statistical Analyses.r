@@ -270,6 +270,21 @@ summary (lineartest27)
 
 avPlots(lineartest27, ylab= "Vulnerability", main = "Vulnerability v Precipitation Measures") 
 
+## Consumer Diet Overlap v Temp &&&&&
+
+SqOv <- sqrt(Overlap)
+lineartest29 <- lm(Overlap~Annual_Temperature+Temperature_Seasonality)
+shapiro.test (lineartest29$residuals)
+summary (lineartest29)
+avPlots(lineartest29, ylab= "Diet Overlap", main = "Consumer Diet Overlap v Temperature Measures") 
+
+## Consumer Diet Overlap V Precipitation 
+
+lineartest30 <- lm(Overlap~Annual_Precipitation+Precipitation_Seasonality)
+shapiro.test (lineartest30$residuals)
+summary (lineartest30)
+
+avPlots(lineartest30, ylab= "Diet Overlap", main = "Consumer Diet Overlap v Precipitation Measures") 
 
 ## Nestedness AIC
 
