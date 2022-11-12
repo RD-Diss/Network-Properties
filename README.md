@@ -13,4 +13,4 @@ Parasite.zip - Contains the data for each of the parasite networks as well as a 
 
 network_properties.r - Contains the code that analyses the properties of the networks along with the method for extracting Worldclim data according to their geographical location.
 
-Statistical_Analysis - Contains the code used for the statistical analyses of the data.
+Statistical_Analysis.r - Contains the code used for the statistical analyses of the data.
