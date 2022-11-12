@@ -12,6 +12,7 @@ library(MuMIn)
 
 ##Testing Statistical Analysis
 
+# * means significant, & means close to being significant
 
 StatTestPar <- read.csv("All_Parasite_Data.csv" , header = T,)
 
