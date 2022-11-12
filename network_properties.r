@@ -69,6 +69,8 @@ HParDat
 plot(Parr[[1]])
 plot(points,add=T)
 
+##When referring to "abundance" in any of the lines of code, this is referring to abundance of links
+
 ### Pollinator Network Analysis
 
 ##Network Loop 
