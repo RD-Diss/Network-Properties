@@ -1,6 +1,6 @@
 # Network-Properties
 
-This project contains code and data for my dissertation project. Its aim is analysing network properties of pollinator and parasite networks along with environmental variables associated with the networks.
+This project contains code and data for my dissertation project. Its aim is analysing network properties of pollinator and parasite networks along with environmental variables associated with the networks as well as how the modularity of the network can affect its robustness.
 
 
 All_Parasite_Data/All_Pollinator_Data.csv - Contains the outputs of the network analysis for the pollinator and parasite networks.
